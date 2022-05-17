@@ -1,10 +1,10 @@
 pipeline {
 
   environment {
-    registry = 'bjgomes/flask_app'
+    registry = 'jjgraham22/app'
     registryCredentials = 'docker'
     cluster_name = 'skillstorm'
-    namespace = 'bgomes'
+  
   }
   agent {
     node {
@@ -15,7 +15,7 @@ pipeline {
   stages {
     stage('git') {
       steps {
-        git(url: 'https://github.com/bdgomey/flasking.git', branch: 'main')
+        git(url: ', branch: 'main')
       }
     }
     stage('Build Stage') {
@@ -34,15 +34,9 @@ pipeline {
         }
       }
     }
-    stage ('Deploy to Kubernetes') {
-    steps {
-        withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
-            sh "aws eks update-kubeconfig --region us-east-1 --name ${cluster_name}"
-            sh "kubectl create namespace ${namespace}"
-            sh "kubectl apply -f deployment.yaml -n ${namespace}"
-            sh "kubectl -n ${namespace} rollout restart deployment flaskcontainer"
-        }
-      }
-    }
+   
+        
+      
+    
   }
 }
